@@ -1,19 +1,12 @@
 import { TrackType, TuneflowPlugin, WidgetType } from 'tuneflow';
-import type {
-  LabelText,
-  ParamDescriptor,
-  Song,
-  SongAccess,
-  TrackPitchSelectorWidgetConfig,
-} from 'tuneflow';
-import _ from 'underscore';
+import type { ParamDescriptor, Song, TrackPitchSelectorWidgetConfig } from 'tuneflow';
 
 /**
  * This is a simple hello world plugin to showcase how to write a TuneFlow plugin.
- * 
+ *
  * For demo purpose, we are going to split the track into two voices, one treble
  * and one bass, based on the track and dividing pitch that the user provides.
- * 
+ *
  * For more development resources, visit: https://github.com/andantei/tuneflow-devkit
  */
 export class HelloWorld extends TuneflowPlugin {
@@ -23,35 +16,6 @@ export class HelloWorld extends TuneflowPlugin {
 
   static pluginId(): string {
     return 'my-plugin-id';
-  }
-
-  static providerDisplayName(): LabelText {
-    return {
-      zh: '制作者的名称',
-      en: 'Name of the Provider',
-    };
-  }
-
-  static pluginDisplayName(): LabelText {
-    return {
-      zh: 'Hello World 插件',
-      en: 'Hello World Plugin',
-    };
-  }
-
-  static pluginDescription(): LabelText | null {
-    return {
-      zh: '这是一段插件功能和使用方法的介绍',
-      en: 'Introduction to what this plugin does and how to use it',
-    };
-  }
-
-  public allowManualApplyAdjust(): boolean {
-    return true;
-  }
-
-  static allowReset(): boolean {
-    return false;
   }
 
   /** Specify here what params you need to run the plugin. */
@@ -83,20 +47,13 @@ export class HelloWorld extends TuneflowPlugin {
     };
   }
 
-  /** Currently songAccess doesn't do anything, you can leave it like this. */
-  songAccess(): SongAccess {
-    return {
-      createTrack: true,
-    };
-  }
-
   /** The main method to run our logic. */
   async run(song: Song, params: { [paramName: string]: any }): Promise<void> {
     // Read the user's input params.
     const trackPitch = this.getParam<any>(params, 'trackPitch');
     const trackId = trackPitch.track as string;
     const pitch = trackPitch.pitch as number;
-    
+
     // Find the track.
     const track = song.getTrackById(trackId);
     if (!track) {

@@ -1,0 +1,20 @@
+{
+  "plugins": [
+    {
+      "providerId": "my-provider-id",
+      "pluginId": "my-plugin-id",
+      "providerDisplayName": {
+        "zh": "制作者的名称",
+        "en": "Name of the Provider"
+      },
+      "pluginDisplayName": {
+        "zh": "Hello World 插件",
+        "en": "Hello World Plugin"
+      },
+      "pluginDescription": {
+        "zh": "这是一段插件功能和使用方法的介绍",
+        "en": "Introduction to what this plugin does and how to use it"
+      }
+    }
+  ]
+}
