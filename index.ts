@@ -1,5 +1,5 @@
-import { TrackType, TuneflowPlugin, WidgetType } from 'tuneflow';
-import type { ParamDescriptor, Song, TrackPitchSelectorWidgetConfig } from 'tuneflow';
+import { TuneflowPlugin, WidgetType } from 'tuneflow';
+import type { ParamDescriptor, Song, PitchWidgetConfig, TuneflowPluginTriggerData } from 'tuneflow';
 
 /**
  * This is a simple hello world plugin to showcase how to write a TuneFlow plugin.
@@ -21,23 +21,15 @@ export class HelloWorld extends TuneflowPlugin {
   /** Specify here what params you need to run the plugin. */
   params(): { [paramName: string]: ParamDescriptor } {
     return {
-      trackPitch: {
+      pitch: {
         displayName: {
           zh: '分割音高',
           en: 'Dividing Pitch',
         },
-        defaultValue: {
-          track: undefined,
-          pitch: 60,
-        },
+        defaultValue: 60,
         widget: {
-          type: WidgetType.TrackPitchSelector,
-          config: {
-            trackSelectorConfig: {
-              allowedTrackTypes: [TrackType.MIDI_TRACK],
-            },
-            pitchSelectorConfig: {},
-          } as TrackPitchSelectorWidgetConfig,
+          type: WidgetType.Pitch,
+          config: {} as PitchWidgetConfig,
         },
         description: {
           zh: '将选中的轨道分成高低声部两轨：从此音高以上（包含）划分为高音 (Treble) 轨，其余音符划分为低音 (Bass) 轨。',
@@ -50,9 +42,12 @@ export class HelloWorld extends TuneflowPlugin {
   /** The main method to run our logic. */
   async run(song: Song, params: { [paramName: string]: any }): Promise<void> {
     // Read the user's input params.
-    const trackPitch = this.getParam<any>(params, 'trackPitch');
-    const trackId = trackPitch.track as string;
-    const pitch = trackPitch.pitch as number;
+    const pitch = this.getParam<number>(params, 'pitch');
+    const trigger = this.getParam<TuneflowPluginTriggerData>(params, 'trigger');
+    if (!trigger.entities) {
+      throw new Error('triggering entities not found.');
+    }
+    const trackId = trigger.entities[0].trackId as string;
 
     // Find the track.
     const track = song.getTrackById(trackId);

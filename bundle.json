@@ -14,7 +14,26 @@
       "pluginDescription": {
         "zh": "这是一段插件功能和使用方法的介绍",
         "en": "Introduction to what this plugin does and how to use it"
-      }
+      },
+      "options": {
+        "allowReset": true,
+        "allowManualApplyAdjust": true
+      },
+      "triggers": [
+        {
+          "type": "context-track-content",
+          "config": {
+            "allowedTrackTypes": ["midi"],
+            "skipAllowedInstrumentCheckOnDesktop": true,
+            "allowedTrackInstruments": [
+              {
+                "isDrum": false
+              }
+            ]
+          }
+        }
+      ],
+      "categories": ["misc"]
     }
   ]
 }
